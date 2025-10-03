@@ -32,13 +32,14 @@ export default function App() {
   };
 
   const fetchTasks = async () => {
-    try {
-      const res = await axios.get(API_TASKS);
-      setTasks(res.data);
-    } catch (error) {
-      showMessage("Could not connect to backend API", error);
-    }
-  };
+  try {
+    const res = await axios.get(API_TASKS);
+    setTasks(res.data || []);
+  } catch (error) {
+    showMessage("Could not connect to backend API", error);
+  }
+};
+
 
   const addTask = async () => {
     if (!form.title.trim()) {
