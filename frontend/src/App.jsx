@@ -1,9 +1,9 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box, Button, Input, Textarea, Heading, Flex, Text, Checkbox, Stack, Alert, AlertIcon, CloseButton, Image
 } from "@chakra-ui/react";
 import axios from "axios";
-import Logo from "../src/assets/Logo.png"; 
+import Logo from "../src/assets/Logo.png";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const API_TASKS = `${API_BASE_URL}/tasks`;
@@ -32,13 +32,13 @@ export default function App() {
   };
 
   const fetchTasks = async () => {
-  try {
-    const res = await axios.get(API_TASKS);
-    setTasks(res.data || []);
-  } catch (error) {
-    showMessage("Could not connect to backend API", error);
-  }
-};
+    try {
+      const res = await axios.get(API_TASKS);
+      setTasks(res.data || []);
+    } catch (error) {
+      showMessage("Could not connect to backend API", error);
+    }
+  };
 
 
   const addTask = async () => {
@@ -86,12 +86,25 @@ export default function App() {
   return (
     <Box>
       {alertMessage && (
-        <Alert status={alertMessage.status} position="fixed" top="0" left="0" right="0" zIndex="10" shadow="xl">
+        <Alert
+          status={alertMessage.status || "info"}   
+          position="fixed"
+          top="0"
+          left="0"
+          right="0"
+          zIndex="10"
+          shadow="xl"
+        >
           <AlertIcon />
           <Box flex="1">
             <Text fontWeight="medium">{alertMessage.title}</Text>
           </Box>
-          <CloseButton position="absolute" right="8px" top="8px" onClick={() => setAlertMessage(null)} />
+          <CloseButton
+            position="absolute"
+            right="8px"
+            top="8px"
+            onClick={() => setAlertMessage(null)}
+          />
         </Alert>
       )}
 
