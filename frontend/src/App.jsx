@@ -85,28 +85,35 @@ export default function App() {
 
   return (
     <Box>
-      {alertMessage && (
-        <Alert
-          status={alertMessage.status || "info"}   
-          position="fixed"
-          top="0"
-          left="0"
-          right="0"
-          zIndex="10"
-          shadow="xl"
-        >
-          <AlertIcon />
-          <Box flex="1">
-            <Text fontWeight="medium">{alertMessage.title}</Text>
-          </Box>
-          <CloseButton
-            position="absolute"
-            right="8px"
-            top="8px"
-            onClick={() => setAlertMessage(null)}
-          />
-        </Alert>
-      )}
+{alertMessage && (
+  <Alert
+    status={alertMessage?.status || "info"}   // ✅ fallback to "info"
+    colorScheme={
+      alertMessage?.status === "error"
+        ? "red"
+        : alertMessage?.status === "success"
+        ? "green"
+        : "blue"
+    }                                        // ✅ safe colorScheme
+    position="fixed"
+    top="0"
+    left="0"
+    right="0"
+    zIndex="10"
+    shadow="xl"
+  >
+    <AlertIcon />
+    <Box flex="1">
+      <Text fontWeight="medium">{alertMessage?.title || "Something happened"} </Text>
+    </Box>
+    <CloseButton
+      position="absolute"
+      right="8px"
+      top="8px"
+      onClick={() => setAlertMessage(null)}
+    />
+  </Alert>
+)}
 
       <Flex p={6} gap={8} bg="blue.50" minH="100vh" wrap={{ base: "wrap", lg: "nowrap" }}>
 
