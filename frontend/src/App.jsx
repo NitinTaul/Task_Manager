@@ -35,9 +35,10 @@ export default function App() {
     try {
       const res = await axios.get(API_TASKS);
       setTasks(res.data || []);
-    } catch (error) {
-      showMessage("Could not connect to backend API", error);
-    }
+   } catch (error) {
+  showMessage("Could not connect to backend API", "error");
+}
+
   };
 
 
