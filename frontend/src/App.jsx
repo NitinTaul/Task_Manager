@@ -5,10 +5,11 @@ import {
 import axios from "axios";
 import Logo from "../src/assets/Logo.png";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const API_TASKS = `${API_BASE_URL}/tasks`;
 
 export default function App() {
+  
   const [tasks, setTasks] = useState([]);
   const [form, setForm] = useState({ title: "", description: "", priority: "Low" });
   const [alertMessage, setAlertMessage] = useState(null);
@@ -35,13 +36,12 @@ export default function App() {
     try {
       const res = await axios.get(API_TASKS);
       setTasks(res.data || []);
-   } catch (error) {
-  showMessage("Could not connect to backend API", "error");
-}
-
+    } catch (error) {
+      showMessage("Could not connect to backend API", "error");
+          console.error("❌ Fetch error:", error);
+    }
   };
-
-
+  
   const addTask = async () => {
     if (!form.title.trim()) {
       showMessage("Title cannot be empty.", "warning");
@@ -78,16 +78,18 @@ export default function App() {
 
   useEffect(() => { fetchTasks(); }, []);
 
-  const sortedTasks = tasks.sort((a, b) => {
-    if (a.completed !== b.completed) return a.completed ? 1 : -1;
-    const priorityOrder = { "High": 3, "Medium": 2, "Low": 1 };
-    return priorityOrder[b.priority] - priorityOrder[a.priority];
-  });
+ const sortedTasks = Array.isArray(tasks)
+  ? [...tasks].sort((a, b) => {
+      if (a.completed !== b.completed) return a.completed ? 1 : -1;
+      const priorityOrder = { High: 3, Medium: 2, Low: 1 };
+      return priorityOrder[b.priority] - priorityOrder[a.priority];
+    })
+  : [];
+
 
   return (
     <Box>
 
-      {console.log(alertMessage)}
       {alertMessage && (
         <Alert
           status={alertMessage?.status || "info"}   // ✅ fallback to "info"
